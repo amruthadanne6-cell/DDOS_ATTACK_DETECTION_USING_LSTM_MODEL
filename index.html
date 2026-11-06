@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DDoS Attack Detection System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: white;
+        }
+
+        header {
+            background: #111c32;
+            padding: 22px;
+            text-align: center;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        header h1 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 25px;
+        }
+
+        header p {
+            color: #cbd5e1;
+        }
+
+        nav {
+            background: #17243c;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+
+        nav a:hover {
+            background: #00a8cc;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #12304d, #17243c);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: #17243c;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #293a55;
+        }
+
+        .card h3 {
+            color: #94a3b8;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        .section {
+            background: #17243c;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+
+        .section h2 {
+            color: #00d4ff;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            color: #00d4ff;
+        }
+
+        .normal {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .suspicious {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        button {
+            background: #00b8d9;
+            color: #07111f;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #67e8f9;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 18px;
+            background: #0b1120;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+
+        .status {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .alert {
+            background: #3b1d2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #f87171;
+            border-radius: 5px;
+        }
+
+        .info {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        footer {
+            background: #111c32;
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 20px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>DDoS ATTACK DETECTION SYSTEM</h1>
+    <p>LSTM-Based Traffic-Flow Classifier</p>
+</header>
+
+<nav>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#traffic">Traffic Monitoring</a>
+    <a href="#detection">Detection</a>
+    <a href="#alerts">Alerts</a>
+    <a href="#about">About Project</a>
+</nav>
+
+<div class="container">
+
+    <section class="welcome" id="dashboard">
+        <h2>Network Security Dashboard</h2>
+        <p class="info">
+            Monitor sample network traffic and demonstrate how an
+            LSTM-based classifier can identify potentially suspicious traffic.
+        </p>
+        <br>
+        <p>System Status: <span class="status">Demo Active</span></p>
+    </section>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Traffic Flows</h3>
+            <div class="number" id="total">1200</div>
+        </div>
+
+        <div class="card">
+            <h3>Normal Flows</h3>
+            <div class="number" id="normalCount">1140</div>
+        </div>
+
+        <div class="card">
+            <h3>Suspicious Flows</h3>
+            <div class="number" id="attackCount">60</div>
+        </div>
+
+        <div class="card">
+            <h3>Detection Model</h3>
+            <div class="number" style="font-size:21px">
+                LSTM Demo
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="traffic">
+        <h2>Network Traffic Monitoring</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Flow ID</th>
+                    <th>Packets</th>
+                    <th>Duration (ms)</th>
+                    <th>Classification</th>
+                </tr>
+            </thead>
+
+            <tbody id="trafficTable">
+                <tr>
+                    <td>FLOW-001</td>
+                    <td>120</td>
+                    <td>500</td>
+                    <td class="normal">Normal</td>
+                </tr>
+
+                <tr>
+                    <td>FLOW-002</td>
+                    <td>8500</td>
+                    <td>100</td>
+                    <td class="suspicious">Suspicious (Sample)</td>
+                </tr>
+
+                <tr>
+                    <td>FLOW-003</td>
+                    <td>95</td>
+                    <td>800</td>
+                    <td class="normal">Normal</td>
+                </tr>
+
+                <tr>
+                    <td>FLOW-004</td>
+                    <td>7200</td>
+                    <td>120</td>
+                    <td class="suspicious">Suspicious (Sample)</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section" id="detection">
+        <h2>DDoS Detection Panel</h2>
+
+        <p class="info">
+            Click the button to run a simulated traffic-classification
+            demonstration. The result is generated using sample rules,
+            not a trained LSTM model.
+        </p>
+
+        <br>
+
+        <button onclick="analyzeTraffic()">
+            Analyze Sample Traffic
+        </button>
+
+        <button onclick="resetDemo()">
+            Reset Dashboard
+        </button>
+
+        <div class="result" id="result">
+            <p>Detection Result: Waiting for analysis...</p>
+        </div>
+    </section>
+
+    <section class="section" id="alerts">
+        <h2>Security Alerts</h2>
+
+        <div id="alertBox">
+            <p class="info">No new demo alerts. Run traffic analysis to generate an alert.</p>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <h2>About the Project</h2>
+
+        <p class="info">
+            <strong>Project Title:</strong><br>
+            Design and Development of a Working Prototype for DDoS
+            Attack Detection Using an LSTM-Based Traffic-Flow Classifier.
+            <br><br>
+
+            <strong>Technology Used:</strong><br>
+            HTML, CSS, JavaScript, Python, TensorFlow/Keras and LSTM.
+            <br><br>
+
+            <strong>Objective:</strong><br>
+            To develop a prototype that can classify network traffic
+            flows and help identify Distributed Denial of Service (DDoS)
+            attacks using sequential traffic features.
+            <br><br>
+
+            <strong>Important:</strong><br>
+            This webpage is a front-end demonstration. Real LSTM-based
+            detection requires a trained model and a connected backend.
+        </p>
+    </section>
+
+</div>
+
+<footer>
+    <p>DDoS Detection Prototype | Network Security Project</p>
+</footer>
+
+<script>
+    let total = 1200;
+    let normal = 1140;
+    let suspicious = 60;
+    let flowNumber = 5;
+
+    function analyzeTraffic() {
+        // Simulated sample data; not real network traffic.
+        const packets = Math.floor(Math.random() * 10000) + 1;
+        const duration = Math.floor(Math.random() * 1000) + 1;
+
+        // Simple demo rule, NOT an LSTM prediction.
+        const isSuspicious = packets > 6000 && duration < 200;
+
+        total++;
+
+        if (isSuspicious) {
+            suspicious++;
+        } else {
+            normal++;
+        }
+
+        document.getElementById("total").textContent = total;
+        document.getElementById("normalCount").textContent = normal;
+        document.getElementById("attackCount").textContent = suspicious;
+
+        const flowId = "FLOW-" + String(flowNumber).padStart(3, "0");
+        flowNumber++;
+
+        const row = document.createElement("tr");
+
+        const values = [
+            flowId,
+            packets,
+            duration,
+            isSuspicious ? "Suspicious (Demo)" : "Normal (Demo)"
+        ];
+
+        values.forEach((value, index) => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+
+            if (index === 3) {
+                cell.className = isSuspicious ? "suspicious" : "normal";
+            }
+
+            row.appendChild(cell);
+        });
+
+        document.getElementById("trafficTable").prepend(row);
+
+        const result = document.getElementById("result");
+        const alertBox = document.getElementById("alertBox");
+
+        if (isSuspicious) {
+            result.innerHTML =
+                "<p class='suspicious'>Demo Result: Suspicious Traffic</p>" +
+                "<p>Packets: " + packets + "</p>" +
+                "<p>Duration: " + duration + " ms</p>" +
+                "<p>Classification is based on a sample rule, not LSTM.</p>";
+
+            const alert = document.createElement("div");
+            alert.className = "alert";
+            alert.textContent =
+                "Demo Alert: " + flowId +
+                " matched the sample suspicious-traffic rule.";
+
+            alertBox.prepend(alert);
+        } else {
+            result.innerHTML =
+                "<p class='normal'>Demo Result: Normal Traffic</p>" +
+                "<p>Packets: " + packets + "</p>" +
+                "<p>Duration: " + duration + " ms</p>" +
+                "<p>Classification is based on a sample rule, not LSTM.</p>";
+        }
+    }
+
+    function resetDemo() {
+        total = 1200;
+        normal = 1140;
+        suspicious = 60;
+        flowNumber = 5;
+
+        document.getElementById("total").textContent = total;
+        document.getElementById("normalCount").textContent = normal;
+        document.getElementById("attackCount").textContent = suspicious;
+
+        document.getElementById("trafficTable").innerHTML = `
+            <tr>
+                <td>FLOW-001</td>
+                <td>120</td>
+                <td>500</td>
+                <td class="normal">Normal</td>
+            </tr>
+            <tr>
+                <td>FLOW-002</td>
+                <td>8500</td>
+                <td>100</td>
+                <td class="suspicious">Suspicious (Sample)</td>
+            </tr>
+            <tr>
+                <td>FLOW-003</td>
+                <td>95</td>
+                <td>800</td>
+                <td class="normal">Normal</td>
+            </tr>
+            <tr>
+                <td>FLOW-004</td>
+                <td>7200</td>
+                <td>120</td>
+                <td class="suspicious">Suspicious (Sample)</td>
+            </tr>`;
+
+        document.getElementById("result").textContent =
+            "Detection Result: Waiting for analysis...";
+
+        document.getElementById("alertBox").innerHTML =
+            "<p class='info'>No new demo alerts. Run traffic analysis to generate an alert.</p>";
+    }
+</script>
+
+</body>
+</html>
